@@ -5,14 +5,24 @@ const { bots, playerRecord } = require("./data");
 const { shuffleArray } = require("./utils");
 
 app.use(express.json());
-app.use("/", express.static(path.join(__dirname, "../public/index.html")));
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "/public/index.html"));
+// });
+// app.get("/styles", (req, res) => {
+//   res.sendFile(path.join(__dirname, "/public/index.css"));
+// });
+app.use("/", express.static(path.join(__dirname, "/public/index.html")));
+app.use(express.static(path.join(__dirname, "/public")));
+app.use("/styles", express.static(path.join(__dirname, "/public/index.css")));
+// app.use("/", express.static(path.join(__dirname, "../public/index.html")));
 
-app.use(express.static(path.join(__dirname, "./public")));
+// app.use(express.static(path.join(__dirname, "./public")));
 
 app.get("/api/robots", (req, res) => {
   try {
     res.status(200).send(botsArr);
   } catch (error) {
+    rollbar.error("Bots did not load");
     console.log("ERROR GETTING BOTS", error);
     res.sendStatus(400);
   }
@@ -71,6 +81,7 @@ app.post("/api/duel", (req, res) => {
 
 app.get("/api/player", (req, res) => {
   try {
+    rollbar.error("This is hard");
     res.status(200).send(playerRecord);
   } catch (error) {
     console.log("ERROR GETTING PLAYER STATS", error);

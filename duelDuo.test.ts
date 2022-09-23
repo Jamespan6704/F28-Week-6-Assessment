@@ -19,5 +19,18 @@ test("Title shows up when page loads", async () => {
 });
 test("Add to Duo button displays the div with id = player-duo", async () => {
   const playerDuo = await driver.findElement(By.id("choices"));
+  await driver.sleep(300);
   expect(playerDuo).toBe(2);
+
+  test("Selecting a bot displays in our div", async () => {
+    await driver.findElement(By.id("draw")).click();
+    await driver.sleep(300);
+    await driver
+      .findElement(By.xpath('(//*[text()="Add to Duo"]) [2]'))
+      .click();
+
+    const playerDuoDiv = await driver.findElement(By.id("player-duo"));
+    const displayed = await playerDuoDiv.isDisplayed();
+    expect(displayed).toBe(true);
+  });
 });
